@@ -1,0 +1,2975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - BudgetWise</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+    /* Primary Brand Colors - NEW GREEN THEME */
+    --primary: #2D6A4F;        /* Medium Forest Green */
+    --primary-dark: #1B4332;   /* Dark Forest Green */
+    --secondary: #40916C;      /* Sage Green */
+    
+    /* Functional Colors */
+    --success: #52B788;        /* Success Green */
+    --danger: #D64545;         /* Muted Red */
+    --warning: #E9A923;        /* Golden Warning */
+    --info: #3A86FF;           /* Info Blue */
+    --dark: #013220;           /* Deep Forest - Main Font Color */
+    
+    /* Gray Scale */
+    --gray-50: #F8FAF9;
+    --gray-100: #D8F3DC;       /* Background Color */
+    --gray-200: #D8F3DC;
+    --gray-300: #B7E4C7;
+    --gray-400: #95D5B2;
+    --gray-500: #74C69D;
+    --gray-600: #52B788;
+    --gray-700: #2D6A4F;
+    --gray-800: #1B4332;
+    --gray-900: #013220;       /* Main Font Color */
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #2D6A4F 0%, #40916C 100%);
+    --gradient-success: linear-gradient(90deg, #52B788, #2D6A4F);
+    --gradient-danger: linear-gradient(90deg, #D64545, #B23B3B);
+    --gradient-warning: linear-gradient(90deg, #E9A923, #D4951A);
+    
+    /* Background Gradients */
+    --bg-gradient: linear-gradient(135deg, #D8F3DC 0%, #D8F3DC 50%, #B7E4C7 100%);
+    --auth-bg-gradient: linear-gradient(to bottom right, #D8F3DC, #D8F3DC, #B7E4C7);
+    --home-bg-gradient: linear-gradient(135deg, rgba(45, 106, 79, 0.08) 0%, rgba(64, 145, 108, 0.08) 100%);
+}
+
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #D8F3DC 0%, #D8F3DC 50%, #B7E4C7 100%);
+  
+            background-attachment: fixed;
+            min-height: 100vh;
+              color: #013220;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+             background-image: 
+        radial-gradient(circle at 20% 50%, rgba(45, 106, 79, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(64, 145, 108, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .navbar-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 18px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .logo h1 {
+            color: var(--gray-900);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 11px 22px;
+            border: none;
+            border-radius: 11px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 36px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-header {
+            margin-bottom: 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 24px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-left h2 {
+            font-size: 36px;
+            color: var(--gray-900);
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .header-left p {
+            color: var(--gray-500);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .filter-controls {
+            background: white;
+            padding: 22px 26px;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 36px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .filter-label {
+            font-weight: 700;
+            color: var(--gray-700);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 9px 18px;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 2px solid transparent;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: var(--gray-200);
+            transform: translateY(-1px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .date-input {
+            padding: 9px 15px;
+            border: 2px solid var(--gray-200);
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+            margin-bottom: 36px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-200);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            animation: scaleUp 0.5s ease-out backwards;
+        }
+
+        @keyframes scaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 18px 18px 0 0;
+        }
+
+        .stat-card.income::before {
+            background: linear-gradient(90deg, var(--success), #059669);
+        }
+
+        .stat-card.expense::before {
+            background: linear-gradient(90deg, var(--danger), #dc2626);
+        }
+
+        .stat-card.savings::before {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .stat-card.income .stat-icon {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
+
+        .stat-card.expense .stat-icon {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+        }
+
+        .stat-card.savings .stat-icon {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+        }
+
+        .stat-card:not(.income):not(.expense):not(.savings) .stat-icon {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+        }
+
+        .stat-title {
+            color: var(--gray-600);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 4px;
+            letter-spacing: -1px;
+        }
+
+        .stat-card.income .stat-value {
+            color: var(--success);
+        }
+
+        .stat-card.expense .stat-value {
+            color: var(--danger);
+        }
+
+        .stat-card.savings .stat-value {
+            color: var(--primary);
+        }
+
+        .budget-goals-section {
+            background: white;
+            padding: 32px;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 36px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .section-header h2 {
+            color: var(--gray-900);
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .budget-goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 22px;
+            margin-top: 22px;
+        }
+
+        .budget-goal-card {
+            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+            border: 2px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .budget-goal-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .goal-category {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .goal-month {
+            font-size: 12px;
+            color: var(--gray-500);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .delete-goal-btn {
+            background: transparent;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 22px;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .delete-goal-btn:hover {
+            background: var(--danger);
+            color: white;
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .goal-amounts {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .amount-item {
+            text-align: center;
+        }
+
+        .amount-label {
+            font-size: 11px;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .amount-value {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .amount-spent {
+            color: var(--danger);
+        }
+
+        .amount-remaining {
+            color: var(--success);
+        }
+
+        .amount-limit {
+            color: var(--gray-700);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 14px;
+            background: var(--gray-200);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .progress-bar {
+            height: 100%;
+            transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+
+        /*budget goal Start*/
+
+        .savings-goals-section {
+            background: white;
+            padding: 32px;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 36px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .savings-goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 22px;
+            margin-top: 22px;
+        }
+
+        .savings-goal-card {
+            background: linear-gradient(135deg, #fff 0%, #fafafa 100%);
+            border: 2px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .savings-goal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .savings-goal-card.completed::before {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+
+        .savings-goal-card:hover {
+            border-color: #10b981;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .savings-goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .goal-title-section {
+            flex: 1;
+        }
+
+        .goal-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .goal-name {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .goal-deadline {
+            font-size: 12px;
+            color: var(--gray-500);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .deadline-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .deadline-badge.urgent {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+        }
+
+        .deadline-badge.soon {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+        }
+
+        .deadline-badge.safe {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+        }
+
+        .goal-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .goal-action-btn {
+            background: transparent;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .goal-action-btn.add-money {
+            color: #10b981;
+        }
+
+        .goal-action-btn.add-money:hover {
+            background: #d1fae5;
+            transform: scale(1.1);
+        }
+
+        .goal-action-btn.delete {
+            color: #ef4444;
+        }
+
+        .goal-action-btn.delete:hover {
+            background: #fee2e2;
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .goal-amounts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .goal-amount-item {
+            text-align: center;
+        }
+
+        .goal-amount-label {
+            font-size: 11px;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .goal-amount-value {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .goal-amount-value.current {
+            color: #10b981;
+        }
+
+        .goal-amount-value.target {
+            color: var(--gray-700);
+        }
+
+        .goal-amount-value.remaining {
+            color: #f59e0b;
+        }
+
+        .savings-progress-bar-container {
+            width: 100%;
+            height: 18px;
+            background: var(--gray-200);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+            position: relative;
+        }
+
+        .savings-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 20px;
+            transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+        }
+
+        .savings-progress-bar.completed {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+
+        .savings-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .progress-percentage-badge {
+            position: relative;
+            z-index: 1;
+            background: white;
+            color: #10b981;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .savings-progress-text {
+            font-size: 13px;
+            color: var(--gray-600);
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .contribution-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .contribution-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .contribution-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Contribution Modal Styles */
+        .contribution-form-group {
+            margin-bottom: 20px;
+        }
+
+        .contribution-amount-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 11px;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: var(--gray-50);
+        }
+
+        .contribution-amount-input:focus {
+            outline: none;
+            border-color: #10b981;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .quick-amount-btn {
+            padding: 10px;
+            background: var(--gray-100);
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-amount-btn:hover {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #10b981;
+            transform: scale(1.05);
+        }
+
+        .contributions-history {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-top: 20px;
+            border-top: 2px solid var(--gray-200);
+            padding-top: 16px;
+        }
+
+        .contribution-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .contribution-item:hover {
+            background: #d1fae5;
+            transform: translateX(4px);
+        }
+
+        .contribution-details {
+            flex: 1;
+        }
+
+        .contribution-amount {
+            font-size: 16px;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 4px;
+        }
+
+        .contribution-date {
+            font-size: 11px;
+            color: var(--gray-500);
+            font-weight: 600;
+        }
+
+        .empty-contributions {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-400);
+        }
+
+        /*budget goal over*/
+
+
+        /* AI Recommendation start*/
+
+        .recommendations-section {
+    background: linear-gradient(135deg, #2D6A4F 0%, #40916C 100%);
+    padding: 36px;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(45, 106, 79, 0.3);
+    margin-bottom: 36px;
+    animation: fadeIn 1.2s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.recommendations-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.1); opacity: 0.5; }
+}
+
+.recommendations-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+}
+
+.recommendations-header h2 {
+    color: white;
+    font-size: 24px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.recommendations-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.refresh-recommendations-btn {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.refresh-recommendations-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.refresh-recommendations-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.recommendation-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    animation: slideInUp 0.5s ease-out backwards;
+}
+
+.recommendation-card:nth-child(1) { animation-delay: 0.1s; }
+.recommendation-card:nth-child(2) { animation-delay: 0.2s; }
+.recommendation-card:nth-child(3) { animation-delay: 0.3s; }
+.recommendation-card:nth-child(4) { animation-delay: 0.4s; }
+.recommendation-card:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.recommendation-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    border-color: white;
+}
+
+.recommendation-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.recommendation-text {
+    color: var(--gray-800);
+    font-size: 15px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.recommendation-text strong {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.recommendations-loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: white;
+}
+
+.recommendations-loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+.empty-recommendations {
+    text-align: center;
+    padding: 60px 20px;
+    color: white;
+}
+
+.empty-recommendations-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.8;
+}
+
+.empty-recommendations h3 {
+    color: white;
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.empty-recommendations p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
+}
+
+/* Recommendation AI over*/
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-bar.safe {
+            background: linear-gradient(90deg, var(--success), #059669);
+        }
+
+        .progress-bar.warning {
+            background: linear-gradient(90deg, var(--warning), #d97706);
+        }
+
+        .progress-bar.danger {
+            background: linear-gradient(90deg, var(--danger), #dc2626);
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: var(--gray-600);
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .empty-goals {
+            text-align: center;
+            padding: 70px 20px;
+        }
+
+        .empty-goals-icon {
+            font-size: 56px;
+            margin-bottom: 18px;
+            opacity: 0.3;
+            animation: bounce 2s infinite;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 36px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .modal-header h3 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            font-size: 30px;
+            color: var(--gray-400);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--gray-700);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 13px 17px;
+            border: 2px solid var(--gray-200);
+            border-radius: 11px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: var(--gray-50);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 32px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 26px;
+            margin-bottom: 36px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 32px;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 26px;
+        }
+
+        .chart-card h2 {
+            color: var(--gray-900);
+            font-size: 19px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chart-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 340px;
+        }
+
+        .chart-card.full-width .chart-container {
+            height: 400px;
+        }
+
+        .table-card {
+            background: white;
+            padding: 32px;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 28px;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .table-card h2 {
+            color: var(--gray-900);
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid var(--gray-200);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        table thead {
+            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+        }
+
+        table th {
+            padding: 18px;
+            text-align: left;
+            font-weight: 800;
+            color: var(--gray-700);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        table td {
+            padding: 18px;
+            color: var(--gray-800);
+            border-bottom: 1px solid var(--gray-100);
+            font-weight: 500;
+        }
+
+        table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        table tbody tr:hover {
+            background: var(--gray-50);
+            transform: scale(1.01);
+        }
+
+        .type-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: capitalize;
+        }
+
+        .type-badge.income {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+        }
+
+        .type-badge.expense {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 90px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 72px;
+            margin-bottom: 18px;
+            opacity: 0.3;
+            animation: bounce 2s infinite;
+        }
+
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .budget-goals-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px;
+            }
+
+            .navbar-content {
+                padding: 16px 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-left h2 {
+                font-size: 28px;
+            }
+        }
+
+
+
+        /* Two-column goals layout */
+.goals-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 36px;
+}
+
+/* Collapsible sections */
+.collapsible-section {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid var(--gray-200);
+    margin-bottom: 36px;
+    overflow: hidden;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.section-toggle {
+    width: 100%;
+    padding: 24px 32px;
+    background: linear-gradient(135deg, #2D6A4F 0%, #40916C 100%);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.section-toggle:hover {
+    background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+}
+
+.toggle-icon {
+    font-size: 28px;
+    margin-right: 12px;
+}
+
+.toggle-title {
+    flex: 1;
+    text-align: left;
+    color: white;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.toggle-arrow {
+    color: white;
+    font-size: 20px;
+    transition: transform 0.3s ease;
+    font-weight: bold;
+}
+
+.toggle-arrow.rotated {
+    transform: rotate(180deg);
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+}
+
+.collapsible-content.open {
+    max-height: 5000px;
+    transition: max-height 0.8s ease-in;
+}
+
+/* Update recommendations section when inside collapsible */
+.collapsible-content .recommendations-section {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Update charts when inside collapsible */
+.collapsible-content .charts-grid {
+    padding: 32px;
+    background: var(--gray-50);
+}
+
+/* Responsive: Stack goals on mobile */
+@media (max-width: 1024px) {
+    .goals-row {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <div class="logo-icon">💰</div>
+                <h1>BudgetWise Dashboard</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/home" class="btn btn-primary">🏠 Home</a>
+                <a href="/logout" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    < class="container">
+        <div class="dashboard-header">
+            <div class="header-left">
+                <h2>Financial Overview</h2>
+                <p>Track your income, expenses, and savings with intelligent insights</p>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-primary" onclick="generatePDFReport()" id="generateReportBtn">
+                    📄 Generate Report
+                </button>
+            </div>
+        </div>
+
+        <div class="filter-controls">
+            <span class="filter-label">📅 Time Period:</span>
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all" onclick="applyFilter('all')">All Time</button>
+                <button class="filter-btn" data-filter="week" onclick="applyFilter('week')">Last Week</button>
+                <button class="filter-btn" data-filter="month" onclick="applyFilter('month')">Last Month</button>
+                <button class="filter-btn" data-filter="3months" onclick="applyFilter('3months')">Last 3 Months</button>
+            </div>
+            
+            <span class="filter-label" style="margin-left: 20px;">🔍 Custom Range:</span>
+            <input type="date" id="startDate" class="date-input" onchange="applyCustomFilter()">
+            <span style="color: var(--gray-400);">to</span>
+            <input type="date" id="endDate" class="date-input" onchange="applyCustomFilter()">
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card income">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Total Income</div>
+                        <div class="stat-value" id="totalIncome">₹{{ "{:,.2f}".format(stats.total_income) }}</div>
+                    </div>
+                    <div class="stat-icon">💰</div>
+                </div>
+            </div>
+
+            <div class="stat-card expense">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Total Expenses</div>
+                        <div class="stat-value" id="totalExpense">₹{{ "{:,.2f}".format(stats.total_expense) }}</div>
+                    </div>
+                    <div class="stat-icon">💸</div>
+                </div>
+            </div>
+
+            <div class="stat-card savings">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Savings Rate</div>
+                        <div class="stat-value" id="savingsRate">{{ "{:.1f}".format(stats.savings_rate) }}%</div>
+                    </div>
+                    <div class="stat-icon">🎯</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Transactions</div>
+                        <div class="stat-value" id="transactionCount">{{ stats.transaction_count }}</div>
+                    </div>
+                    <div class="stat-icon">📈</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="goals-row">
+        <div class="budget-goals-section">
+            <div class="section-header">
+                <h2>🎯 Budget Goals</h2>
+                <button class="btn btn-primary" onclick="openBudgetModal()">
+                    + Add Budget Goal
+                </button>
+            </div>
+            <div id="budgetGoalsContainer" class="budget-goals-grid">
+                <div class="empty-goals">
+                    <div class="empty-goals-icon">🎯</div>
+                    <h3>No budget goals set</h3>
+                    <p>Create your first budget goal to track spending</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="savings-goals-section">
+            <div class="section-header">
+                <h2>💰 Savings Goals</h2>
+                <button class="btn btn-primary" onclick="openSavingsGoalModal()">
+                    + Add Savings Goal
+                </button>
+            </div>
+            <div id="savingsGoalsContainer" class="savings-goals-grid">
+                <div class="empty-goals">
+                    <div class="empty-goals-icon">💰</div>
+                    <h3>No savings goals set</h3>
+                    <p>Create your first savings goal to track your progress</p>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+
+        <!-- Savings Goal Creation Modal -->
+        <div id="savingsGoalModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create Savings Goal</h3>
+                    <button class="close-modal" onclick="closeSavingsGoalModal()">&times;</button>
+                </div>
+                <form id="savingsGoalForm" onsubmit="saveSavingsGoal(event)">
+                    <div class="form-group">
+                        <label for="savingsGoalName">Goal Name</label>
+                        <input type="text" id="savingsGoalName" required placeholder="e.g., Buy Home, Emergency Fund, Vacation">
+                    </div>
+                    <div class="form-group">
+                        <label for="savingsGoalIcon">Icon (Emoji)</label>
+                        <select id="savingsGoalIcon" required>
+                            <option value="🏠">🏠 Home</option>
+                            <option value="🚗">🚗 Car</option>
+                            <option value="✈️">✈️ Travel</option>
+                            <option value="💍">💍 Wedding</option>
+                            <option value="🎓">🎓 Education</option>
+                            <option value="🏥">🏥 Emergency Fund</option>
+                            <option value="💰">💰 Investment</option>
+                            <option value="🎁">🎁 Gift</option>
+                            <option value="📱">📱 Gadget</option>
+                            <option value="🎯">🎯 Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="savingsTargetAmount">Target Amount (₹)</label>
+                        <input type="number" id="savingsTargetAmount" step="0.01" min="1" required placeholder="1000000">
+                    </div>
+                    <div class="form-group">
+                        <label for="savingsDeadline">Deadline (Optional)</label>
+                        <input type="date" id="savingsDeadline">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeSavingsGoalModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Goal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contribution Modal -->
+        <div id="contributionModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add Money to Goal</h3>
+                    <button class="close-modal" onclick="closeContributionModal()">&times;</button>
+                </div>
+                <div class="contribution-form-group">
+                    <label for="contributionAmount">Amount (₹)</label>
+                    <input type="number" id="contributionAmount" class="contribution-amount-input" step="0.01" min="0.01" placeholder="5000" required>
+                    <div class="quick-amounts">
+                        <button type="button" class="quick-amount-btn" onclick="setQuickAmount(500)">₹500</button>
+                        <button type="button" class="quick-amount-btn" onclick="setQuickAmount(1000)">₹1,000</button>
+                        <button type="button" class="quick-amount-btn" onclick="setQuickAmount(5000)">₹5,000</button>
+                        <button type="button" class="quick-amount-btn" onclick="setQuickAmount(10000)">₹10,000</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contributionNotes">Notes (Optional)</label>
+                    <input type="text" id="contributionNotes" placeholder="e.g., Monthly savings, Bonus">
+                </div>
+                
+                <!-- Recent Contributions -->
+                <div class="contributions-history" id="contributionsHistory">
+                    <h4 style="margin-bottom: 12px; font-size: 14px; color: var(--gray-600); font-weight: 700;">Recent Contributions</h4>
+                    <div id="contributionsList"></div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeContributionModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addContribution()">Add Money</button>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="collapsible-section">
+    <button class="section-toggle" onclick="toggleSection('recommendations')">
+        <span class="toggle-icon">💡</span>
+        <span class="toggle-title">AI-Powered Recommendations</span>
+        <span class="toggle-arrow" id="recommendations-arrow">▼</span>
+    </button>
+
+    <div class="collapsible-content" id="recommendations-content" style="display: none;">
+        <div class="recommendations-section">
+            <div class="recommendations-header">
+                <div>
+                    <h2>💡 AI-Powered Recommendations</h2>
+                    <span class="recommendations-badge">Personalized for You</span>
+                </div>
+                <button class="refresh-recommendations-btn" onclick="loadRecommendations()" id="refreshRecBtn">
+                    <span id="refreshIcon">🔄</span> Refresh
+                </button>
+            </div>
+            
+            <div id="recommendationsContainer" class="recommendations-grid">
+                <div class="recommendations-loading">
+                    <div class="recommendations-loading-spinner"></div>
+                    <p>Analyzing your financial profile...</p>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+        
+
+        {% if transactions %}
+
+        <div class="collapsible-section">
+    <button class="section-toggle" onclick="toggleSection('analysis')">
+        <span class="toggle-icon">📊</span>
+        <span class="toggle-title">Analysis & Charts</span>
+        <span class="toggle-arrow" id="analysis-arrow">▼</span>
+    </button>
+    
+    <div class="collapsible-content" id="analysis-content" style="display: none;">
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h2>💰 Income vs Expense</h2>
+                    <span class="chart-badge">Overview</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="incomeExpenseChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h2>📊 Expense Breakdown</h2>
+                    <span class="chart-badge">Categories</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card full-width">
+                <div class="chart-header">
+                    <h2>📈 Monthly Trend Analysis</h2>
+                    <span class="chart-badge">Time Series</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h2>💳 Payment Methods</h2>
+                    <span class="chart-badge">Distribution</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="paymentModeChart"></canvas>
+                </div>
+            </div>
+        </div>
+        </div>
+          </div>
+        {% endif %}
+
+
+        <div class="collapsible-section">
+    <button class="section-toggle" onclick="toggleSection('transactions')">
+        <span class="toggle-icon">📋</span>
+        <span class="toggle-title">Recent Transactions</span>
+        <span class="toggle-arrow" id="transactions-arrow">▼</span>
+    </button>
+    <div class="collapsible-content" id="transactions-content" style="display: none;">
+         <div class="table-card" style="margin-bottom: 0; border-radius: 0;">
+            <!-- <div class="table-header">
+                <h2>Recent Transactions</h2>
+            </div> -->
+            {% if transactions %}
+                <div class="table-wrapper">
+                    <table id="transactionsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Payment Mode</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaction in transactions[:20] %}
+                            <tr data-date="{{ transaction.date }}">
+                                <td style="font-weight: 600;">{{ transaction.date.strftime('%d %b %Y') if transaction.date else 'N/A' }}</td>
+                                <td>
+                                    <span class="type-badge {{ transaction.transaction_type.lower() }}">
+                                        {{ transaction.transaction_type }}
+                                    </span>
+                                </td>
+                                <td>{{ transaction.category }}</td>
+                                <td style="font-weight: 700; color: {% if transaction.transaction_type == 'Income' %}var(--success){% else %}var(--danger){% endif %};">
+                                    ₹{{ "{:,.2f}".format(transaction.amount) }}
+                                </td>
+                                <td style="color: var(--gray-600);">{{ transaction.payment_mode }}</td>
+                                <td style="color: var(--gray-600);">{{ transaction.location or '-' }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <h3>No transactions yet</h3>
+                    <p>Start by adding your first transaction</p>
+                    <a href="/home" class="btn btn-primary">Add Transaction</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+     </div>
+    </div>
+
+    <div id="budgetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Budget Goal</h3>
+                <button class="close-modal" onclick="closeBudgetModal()">&times;</button>
+            </div>
+            <form id="budgetGoalForm" onsubmit="saveBudgetGoal(event)">
+                <div class="form-group">
+                    <label for="goalCategory">Category</label>
+                    <select id="goalCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Food">Food</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Education">Education</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goalAmount">Budget Limit (₹)</label>
+                    <input type="number" id="goalAmount" step="0.01" min="1" required placeholder="15000">
+                </div>
+                <div class="form-group">
+                    <label for="goalMonth">Month</label>
+                    <input type="month" id="goalMonth" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeBudgetModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const allTransactions = {{ transactions | tojson | safe }};
+        let currentFilter = 'all';
+        let chartInstances = {};
+
+        if (allTransactions && allTransactions.length > 0) {
+            updateChartsWithFilter(allTransactions);
+        }
+
+        loadBudgetGoals();
+
+        function applyFilter(filter) {
+            currentFilter = filter;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+            
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            
+            const filteredTransactions = filterTransactionsByPeriod(allTransactions, filter);
+            updateChartsWithFilter(filteredTransactions);
+            updateStats(filteredTransactions);
+        }
+
+        function applyCustomFilter() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (startDate && endDate) {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                const filtered = allTransactions.filter(t => {
+                    const tDate = new Date(t.date);
+                    return tDate >= new Date(startDate) && tDate <= new Date(endDate);
+                });
+                
+                updateChartsWithFilter(filtered);
+                updateStats(filtered);
+            }
+        }
+
+        function filterTransactionsByPeriod(transactions, period) {
+            if (period === 'all') return transactions;
+            
+            const now = new Date();
+            const cutoffDate = new Date();
+            
+            switch(period) {
+                case 'week':
+                    cutoffDate.setDate(now.getDate() - 7);
+                    break;
+                case 'month':
+                    cutoffDate.setMonth(now.getMonth() - 1);
+                    break;
+                case '3months':
+                    cutoffDate.setMonth(now.getMonth() - 3);
+                    break;
+            }
+            
+            return transactions.filter(t => new Date(t.date) >= cutoffDate);
+        }
+
+        function updateStats(transactions) {
+            let totalIncome = 0;
+            let totalExpense = 0;
+            
+            transactions.forEach(t => {
+                if (t.transaction_type === 'Income') {
+                    totalIncome += parseFloat(t.amount);
+                } else if (t.transaction_type === 'Expense') {
+                    totalExpense += parseFloat(t.amount);
+                }
+            });
+            
+            const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpense) / totalIncome * 100) : 0;
+            
+            document.getElementById('totalIncome').textContent = '₹' + totalIncome.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('totalExpense').textContent = '₹' + totalExpense.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('savingsRate').textContent = savingsRate.toFixed(1) + '%';
+            document.getElementById('transactionCount').textContent = transactions.length;
+        }
+
+        function updateChartsWithFilter(transactions) {
+            const processedData = processTransactionData(transactions);
+            
+            Object.values(chartInstances).forEach(chart => chart.destroy());
+            chartInstances = {};
+            
+            chartInstances.incomeExpense = createIncomeExpenseChart(processedData.incomeTotal, processedData.expenseTotal);
+            chartInstances.category = createCategoryChart(processedData.expenseByCategory);
+            chartInstances.trend = createTrendChart(processedData.monthlyData);
+            chartInstances.payment = createPaymentModeChart(processedData.paymentModeData);
+        }
+
+        function processTransactionData(transactions) {
+            let incomeTotal = 0;
+            let expenseTotal = 0;
+            let expenseByCategory = {};
+            let monthlyData = {};
+            let paymentModeData = {};
+
+            transactions.forEach(t => {
+                const amount = parseFloat(t.amount);
+                const type = t.transaction_type;
+                const category = t.category || 'Other';
+                const paymentMode = t.payment_mode || 'Other';
+                const date = new Date(t.date);
+                const monthYear = date.toLocaleString('default', { month: 'short', year: 'numeric' });
+
+                if (type === 'Income') {
+                    incomeTotal += amount;
+                } else if (type === 'Expense') {
+                    expenseTotal += amount;
+                    expenseByCategory[category] = (expenseByCategory[category] || 0) + amount;
+                    paymentModeData[paymentMode] = (paymentModeData[paymentMode] || 0) + amount;
+                }
+
+                if (!monthlyData[monthYear]) {
+                    monthlyData[monthYear] = { income: 0, expense: 0 };
+                }
+                if (type === 'Income') {
+                    monthlyData[monthYear].income += amount;
+                } else {
+                    monthlyData[monthYear].expense += amount;
+                }
+            });
+
+            return { incomeTotal, expenseTotal, expenseByCategory, monthlyData, paymentModeData };
+        }
+
+        function createIncomeExpenseChart(income, expense) {
+            const ctx = document.getElementById('incomeExpenseChart');
+            return new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Income', 'Expense'],
+                    datasets: [{
+                        data: [income, expense],
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.9)',
+                            'rgba(239, 68, 68, 0.9)'
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 12
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: { size: 13, weight: '600', family: 'Inter' },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            titleFont: { size: 14, weight: '700' },
+                            bodyFont: { size: 13 },
+                            callbacks: {
+                                label: function(context) {
+                                    const percentage = ((context.parsed / (income + expense)) * 100).toFixed(1);
+                                    return context.label + ': ₹' + context.parsed.toLocaleString('en-IN') + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createCategoryChart(categoryData) {
+            const categories = Object.keys(categoryData);
+            const amounts = Object.values(categoryData);
+
+            const colors = [
+                'rgba(99, 102, 241, 0.85)',
+                'rgba(139, 92, 246, 0.85)',
+                'rgba(236, 72, 153, 0.85)',
+                'rgba(59, 130, 246, 0.85)',
+                'rgba(16, 185, 129, 0.85)',
+                'rgba(245, 158, 11, 0.85)',
+                'rgba(239, 68, 68, 0.85)',
+                'rgba(107, 114, 128, 0.85)'
+            ];
+
+            const ctx = document.getElementById('categoryChart');
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        label: 'Amount',
+                        data: amounts,
+                        backgroundColor: colors.slice(0, categories.length),
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            titleFont: { size: 14, weight: '700' },
+                            bodyFont: { size: 13 },
+                            callbacks: {
+                                label: function(context) {
+                                    return '₹' + context.parsed.y.toLocaleString('en-IN');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            border: { display: false },
+                            grid: { color: 'rgba(226, 232, 240, 0.8)' },
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + (value / 1000).toFixed(0) + 'k';
+                                },
+                                color: 'rgb(100, 116, 139)',
+                                font: { size: 12, family: 'Inter' }
+                            }
+                        },
+                        x: {
+                            border: { display: false },
+                            grid: { display: false },
+                            ticks: {
+                                color: 'rgb(100, 116, 139)',
+                                font: { size: 12, family: 'Inter' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createTrendChart(monthlyData) {
+            const months = Object.keys(monthlyData).sort((a, b) => new Date(a) - new Date(b));
+            const incomeData = months.map(m => monthlyData[m].income);
+            const expenseData = months.map(m => monthlyData[m].expense);
+
+            const ctx = document.getElementById('trendChart');
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: incomeData,
+                            borderColor: 'rgb(16, 185, 129)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            borderWidth: 3,
+                            pointRadius: 6,
+                            pointBackgroundColor: 'rgb(16, 185, 129)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 8
+                        },
+                        {
+                            label: 'Expense',
+                            data: expenseData,
+                            borderColor: 'rgb(239, 68, 68)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            borderWidth: 3,
+                            pointRadius: 6,
+                            pointBackgroundColor: 'rgb(239, 68, 68)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                font: { size: 13, weight: '600', family: 'Inter' }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            titleFont: { size: 14, weight: '700' },
+                            bodyFont: { size: 13 },
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ₹' + context.parsed.y.toLocaleString('en-IN');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            border: { display: false },
+                            grid: { color: 'rgba(226, 232, 240, 0.8)' },
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + (value / 1000).toFixed(0) + 'k';
+                                },
+                                color: 'rgb(100, 116, 139)',
+                                font: { size: 12, family: 'Inter' }
+                            }
+                        },
+                        x: {
+                            border: { display: false },
+                            grid: { display: false },
+                            ticks: {
+                                color: 'rgb(100, 116, 139)',
+                                font: { size: 12, family: 'Inter' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createPaymentModeChart(paymentModeData) {
+            const modes = Object.keys(paymentModeData);
+            const amounts = Object.values(paymentModeData);
+
+                const colors =[
+    'rgba(255, 90, 90, 0.9)',      // Soft Vibrant Red
+    'rgba(255, 159, 67, 0.9)',     // Warm Sunset Orange
+    'rgba(255, 205, 86, 0.9)',     // Soft Golden Yellow
+    'rgba(75, 192, 255, 0.9)',     // Sky Blue
+    'rgba(153, 102, 255, 0.9)',    // Lavender Purple
+    'rgba(255, 102, 204, 0.9)',    // Pink Magenta
+    'rgba(0, 210, 170, 0.9)',      // Aqua Mint (contrasts with green)
+    'rgba(0, 119, 182, 0.9)'       // Deep Ocean Blue
+];
+            
+
+            const ctx = document.getElementById('paymentModeChart');
+            return new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: modes,
+                    datasets: [{
+                        data: amounts,
+                        backgroundColor: colors.slice(0, modes.length),
+                        borderWidth: 0,
+                        hoverOffset: 12
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: { size: 12, weight: '600', family: 'Inter' },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            titleFont: { size: 14, weight: '700' },
+                            bodyFont: { size: 13 },
+                            callbacks: {
+                                label: function(context) {
+                                    const total = amounts.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ₹' + context.parsed.toLocaleString('en-IN') + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function openBudgetModal() {
+            document.getElementById('budgetModal').classList.add('show');
+            const today = new Date();
+            const currentMonth = today.toISOString().slice(0, 7);
+            document.getElementById('goalMonth').value = currentMonth;
+        }
+
+        function closeBudgetModal() {
+            document.getElementById('budgetModal').classList.remove('show');
+            document.getElementById('budgetGoalForm').reset();
+        }
+
+        async function saveBudgetGoal(event) {
+            event.preventDefault();
+            
+            const category = document.getElementById('goalCategory').value;
+            const amount = document.getElementById('goalAmount').value;
+            const monthYear = document.getElementById('goalMonth').value;
+            
+            try {
+                const response = await fetch('/api/budget-goals', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        category: category,
+                        budget_limit: parseFloat(amount),
+                        month_year: monthYear
+                    })
+                });
+                
+                if (response.ok) {
+                    closeBudgetModal();
+                    loadBudgetGoals();
+                } else {
+                    alert('Failed to save budget goal');
+                }
+            } catch (error) {
+                console.error('Error saving budget goal:', error);
+                alert('Error saving budget goal');
+            }
+        }
+
+        async function loadBudgetGoals() {
+            try {
+                const response = await fetch('/api/budget-goals');
+                const data = await response.json();
+                
+                const container = document.getElementById('budgetGoalsContainer');
+                
+                if (data.goals && data.goals.length > 0) {
+                    container.innerHTML = data.goals.map(goal => {
+                        const spent = goal.spent || 0;
+                        const limit = goal.budget_limit;
+                        const remaining = limit - spent;
+                        const percentage = Math.min((spent / limit) * 100, 100);
+                        
+                        let progressClass = 'safe';
+                        if (percentage >= 90) {
+                            progressClass = 'danger';
+                        } else if (percentage >= 70) {
+                            progressClass = 'warning';
+                        }
+                        
+                        const monthYear = new Date(goal.month_year + '-01');
+                        const monthName = monthYear.toLocaleString('default', { month: 'long', year: 'numeric' });
+                        
+                        return `
+                            <div class="budget-goal-card">
+                                <div class="goal-header">
+                                    <div>
+                                        <div class="goal-category">${goal.category}</div>
+                                        <div class="goal-month">${monthName}</div>
+                                    </div>
+                                    <button class="delete-goal-btn" onclick="deleteBudgetGoal(${goal.goal_id})">×</button>
+                                </div>
+                                <div class="goal-amounts">
+                                    <div class="amount-item">
+                                        <div class="amount-label">Spent</div>
+                                        <div class="amount-value amount-spent">₹${spent.toLocaleString('en-IN', {minimumFractionDigits: 0})}</div>
+                                    </div>
+                                    <div class="amount-item">
+                                        <div class="amount-label">Remaining</div>
+                                        <div class="amount-value amount-remaining">₹${remaining.toLocaleString('en-IN', {minimumFractionDigits: 0})}</div>
+                                    </div>
+                                    <div class="amount-item">
+                                        <div class="amount-label">Budget</div>
+                                        <div class="amount-value amount-limit">₹${limit.toLocaleString('en-IN', {minimumFractionDigits: 0})}</div>
+                                    </div>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar ${progressClass}" style="width: ${percentage}%"></div>
+                                </div>
+                                <div class="progress-text">${percentage.toFixed(1)}% of budget used</div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-goals">
+                            <div class="empty-goals-icon">🎯</div>
+                            <h3>No budget goals set</h3>
+                            <p>Create your first budget goal to track spending</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading budget goals:', error);
+            }
+        }
+
+        async function deleteBudgetGoal(goalId) {
+            if (!confirm('Are you sure you want to delete this budget goal?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/budget-goals/${goalId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    loadBudgetGoals();
+                } else {
+                    alert('Failed to delete budget goal');
+                }
+            } catch (error) {
+                console.error('Error deleting budget goal:', error);
+                alert('Error deleting budget goal');
+            }
+        }
+
+        async function generatePDFReport() {
+            const btn = document.getElementById('generateReportBtn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '⏳ Generating Report...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch('/generate-report', {
+                    method: 'GET'
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `BudgetWise_Report_${new Date().toISOString().split('T')[0]}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    btn.innerHTML = '✅ Report Downloaded!';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }, 2000);
+                } else {
+                    throw new Error('Failed to generate report');
+                }
+            } catch (error) {
+                console.error('Error generating report:', error);
+                alert('Failed to generate PDF report. Please try again.');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        document.getElementById('budgetModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBudgetModal();
+            }
+        });
+
+
+        let currentContributionGoalId = null;
+
+// Load savings goals on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadSavingsGoals();
+});
+
+async function loadSavingsGoals() {
+    try {
+        const response = await fetch('/api/savings-goals');
+        const data = await response.json();
+        
+        const container = document.getElementById('savingsGoalsContainer');
+        
+        if (data.goals && data.goals.length > 0) {
+            container.innerHTML = data.goals.map(goal => {
+                const current = goal.current_amount || 0;
+                const target = goal.target_amount;
+                const remaining = goal.remaining_amount;
+                const percentage = goal.progress_percentage || 0;
+                const daysRemaining = goal.days_remaining;
+                
+                // Determine deadline badge
+                let deadlineBadge = '';
+                if (daysRemaining !== null) {
+                    let badgeClass = 'safe';
+                    let badgeText = `${daysRemaining} days left`;
+                    
+                    if (daysRemaining <= 30) {
+                        badgeClass = 'urgent';
+                        badgeText = `${daysRemaining} days left!`;
+                    } else if (daysRemaining <= 90) {
+                        badgeClass = 'soon';
+                    }
+                    
+                    deadlineBadge = `<span class="deadline-badge ${badgeClass}">⏰ ${badgeText}</span>`;
+                }
+                
+                const isCompleted = percentage >= 100;
+                const completedClass = isCompleted ? 'completed' : '';
+                
+                return `
+                    <div class="savings-goal-card ${completedClass}">
+                        <div class="savings-goal-header">
+                            <div class="goal-title-section">
+                                <div class="goal-icon">${goal.icon || '🎯'}</div>
+                                <div class="goal-name">${goal.goal_name}</div>
+                                <div class="goal-deadline">
+                                    ${deadlineBadge}
+                                </div>
+                            </div>
+                            <div class="goal-actions">
+                                <button class="goal-action-btn add-money" onclick="openContributionModal(${goal.goal_id}, '${goal.goal_name}')" title="Add Money">
+                                    💵
+                                </button>
+                                <button class="goal-action-btn delete" onclick="deleteSavingsGoal(${goal.goal_id})" title="Delete Goal">
+                                    ×
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="goal-amounts">
+                            <div class="goal-amount-item">
+                                <div class="goal-amount-label">Current</div>
+                                <div class="goal-amount-value current">₹${current.toLocaleString('en-IN', {minimumFractionDigits: 0})}</div>
+                            </div>
+                            <div class="goal-amount-item">
+                                <div class="goal-amount-label">Target</div>
+                                <div class="goal-amount-value target">₹${target.toLocaleString('en-IN', {minimumFractionDigits: 0})}</div>
+                            </div>
+                            <div class="goal-amount-item">
+                                <div class="goal-amount-label">Remaining</div>
+                                <div class="goal-amount-value remaining">₹${remaining.toLocaleString('en-IN', {minimumFractionDigits: 0})}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="savings-progress-bar-container">
+                            <div class="savings-progress-bar ${completedClass}" style="width: ${percentage}%">
+                                ${percentage >= 15 ? `<span class="progress-percentage-badge">${percentage.toFixed(1)}%</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="savings-progress-text">
+                            ${isCompleted ? '🎉 Goal Achieved!' : `${percentage.toFixed(1)}% Complete`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            container.innerHTML = `
+                <div class="empty-goals">
+                    <div class="empty-goals-icon">💰</div>
+                    <h3>No savings goals set</h3>
+                    <p>Create your first savings goal to track your progress</p>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error loading savings goals:', error);
+    }
+}
+
+function openSavingsGoalModal() {
+    document.getElementById('savingsGoalModal').classList.add('show');
+    
+    // Set minimum deadline to tomorrow
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById('savingsDeadline').min = tomorrow.toISOString().split('T')[0];
+}
+
+function closeSavingsGoalModal() {
+    document.getElementById('savingsGoalModal').classList.remove('show');
+    document.getElementById('savingsGoalForm').reset();
+}
+
+async function saveSavingsGoal(event) {
+    event.preventDefault();
+    
+    const goalName = document.getElementById('savingsGoalName').value;
+    const targetAmount = document.getElementById('savingsTargetAmount').value;
+    const deadline = document.getElementById('savingsDeadline').value;
+    const icon = document.getElementById('savingsGoalIcon').value;
+    
+    try {
+        const response = await fetch('/api/savings-goals', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                goal_name: goalName,
+                target_amount: parseFloat(targetAmount),
+                deadline: deadline || null,
+                icon: icon
+            })
+        });
+        
+        if (response.ok) {
+            closeSavingsGoalModal();
+            loadSavingsGoals();
+        } else {
+            const error = await response.json();
+            alert('Failed to create savings goal: ' + (error.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error creating savings goal:', error);
+        alert('Error creating savings goal');
+    }
+}
+
+async function deleteSavingsGoal(goalId) {
+    if (!confirm('Are you sure you want to delete this savings goal? All contributions will also be deleted.')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/savings-goals/${goalId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            loadSavingsGoals();
+        } else {
+            alert('Failed to delete savings goal');
+        }
+    } catch (error) {
+        console.error('Error deleting savings goal:', error);
+        alert('Error deleting savings goal');
+    }
+}
+
+async function openContributionModal(goalId, goalName) {
+    currentContributionGoalId = goalId;
+    document.getElementById('contributionModal').classList.add('show');
+    document.querySelector('#contributionModal h3').textContent = `Add Money to ${goalName}`;
+    
+    // Clear form
+    document.getElementById('contributionAmount').value = '';
+    document.getElementById('contributionNotes').value = '';
+    
+    // Load contribution history
+    await loadContributionHistory(goalId);
+}
+
+function closeContributionModal() {
+    document.getElementById('contributionModal').classList.remove('show');
+    currentContributionGoalId = null;
+}
+
+function setQuickAmount(amount) {
+    document.getElementById('contributionAmount').value = amount;
+}
+
+async function addContribution() {
+    const amount = document.getElementById('contributionAmount').value;
+    const notes = document.getElementById('contributionNotes').value;
+    
+    if (!amount || parseFloat(amount) <= 0) {
+        alert('Please enter a valid amount');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/savings-goals/${currentContributionGoalId}/contribute`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                amount: parseFloat(amount),
+                notes: notes
+            })
+        });
+        
+        if (response.ok) {
+            closeContributionModal();
+            loadSavingsGoals();
+            
+            // Show success message
+            const successMsg = document.createElement('div');
+            successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3); z-index: 10000; font-weight: 700;';
+            successMsg.textContent = `✅ ₹${parseFloat(amount).toLocaleString('en-IN')} added successfully!`;
+            document.body.appendChild(successMsg);
+            
+            setTimeout(() => {
+                successMsg.remove();
+            }, 3000);
+        } else {
+            const error = await response.json();
+            alert('Failed to add contribution: ' + (error.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error adding contribution:', error);
+        alert('Error adding contribution');
+    }
+}
+
+async function loadContributionHistory(goalId) {
+    try {
+        const response = await fetch(`/api/savings-goals/${goalId}/contributions`);
+        const data = await response.json();
+        
+        const listContainer = document.getElementById('contributionsList');
+        
+        if (data.contributions && data.contributions.length > 0) {
+            listContainer.innerHTML = data.contributions.slice(0, 5).map(contrib => {
+                const date = new Date(contrib.contribution_date);
+                const formattedDate = date.toLocaleDateString('en-IN', { 
+                    day: 'numeric', 
+                    month: 'short', 
+                    year: 'numeric' 
+                });
+                
+                return `
+                    <div class="contribution-item">
+                        <div class="contribution-details">
+                            <div class="contribution-amount">₹${contrib.amount.toLocaleString('en-IN')}</div>
+                            <div class="contribution-date">${formattedDate}${contrib.notes ? ' • ' + contrib.notes : ''}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            listContainer.innerHTML = '<div class="empty-contributions">No contributions yet</div>';
+        }
+    } catch (error) {
+        console.error('Error loading contribution history:', error);
+    }
+}
+
+// Close modals when clicking outside
+document.getElementById('savingsGoalModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeSavingsGoalModal();
+    }
+});
+
+document.getElementById('contributionModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeContributionModal();
+    }
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadRecommendations();
+});
+
+async function loadRecommendations() {
+    const container = document.getElementById('recommendationsContainer');
+    const refreshBtn = document.getElementById('refreshRecBtn');
+    const refreshIcon = document.getElementById('refreshIcon');
+    
+    // Show loading
+    container.innerHTML = `
+        <div class="recommendations-loading">
+            <div class="recommendations-loading-spinner"></div>
+            <p>Generating personalized recommendations...</p>
+        </div>
+    `;
+    
+    // Disable refresh button
+    refreshBtn.disabled = true;
+    refreshIcon.textContent = '⏳';
+    
+    try {
+        const response = await fetch('/api/recommendations');
+        const data = await response.json();
+        
+        if (data.recommendations && data.recommendations.length > 0) {
+            container.innerHTML = data.recommendations.map((rec, index) => {
+                // Extract icon if present (emoji at start)
+                let icon = '💡';
+                let text = rec;
+                
+                // Check if recommendation starts with emoji
+                const emojiMatch = rec.match(/^([\u{1F300}-\u{1F9FF}])/u);
+                if (emojiMatch) {
+                    icon = emojiMatch[1];
+                    text = rec.substring(emojiMatch[0].length).trim();
+                }
+                
+                // Remove any leading colons or dashes
+                text = text.replace(/^[:\-\s]+/, '');
+                
+                return `
+                    <div class="recommendation-card">
+                        <span class="recommendation-icon">${icon}</span>
+                        <div class="recommendation-text">${text}</div>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            container.innerHTML = `
+                <div class="empty-recommendations">
+                    <div class="empty-recommendations-icon">💡</div>
+                    <h3>No recommendations yet</h3>
+                    <p>Add more transactions to get personalized insights</p>
+                </div>
+            `;
+        }
+        
+        // Re-enable refresh button
+        refreshBtn.disabled = false;
+        refreshIcon.textContent = '🔄';
+        
+    } catch (error) {
+        console.error('Error loading recommendations:', error);
+        
+        container.innerHTML = `
+            <div class="empty-recommendations">
+                <div class="empty-recommendations-icon">⚠️</div>
+                <h3>Unable to load recommendations</h3>
+                <p>Please try again later</p>
+            </div>
+        `;
+        
+        // Re-enable refresh button
+        refreshBtn.disabled = false;
+        refreshIcon.textContent = '🔄';
+    }
+}
+
+// Toggle collapsible sections
+function toggleSection(sectionId) {
+    const content = document.getElementById(sectionId + '-content');
+    const arrow = document.getElementById(sectionId + '-arrow');
+    
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        content.classList.add('open');
+        arrow.classList.add('rotated');
+        
+        // Load recommendations when opened for first time
+        if (sectionId === 'recommendations' && !content.dataset.loaded) {
+            loadRecommendations();
+            content.dataset.loaded = 'true';
+        }
+    } else {
+        content.classList.remove('open');
+        arrow.classList.remove('rotated');
+        
+        // Wait for animation to finish before hiding
+        setTimeout(() => {
+            content.style.display = 'none';
+        }, 500);
+    }
+}
+
+
+    </script>
+</body>
+</html>

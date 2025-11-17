@@ -1,0 +1,1218 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - BudgetWise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .login-link {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 BudgetWise</h1>
+            <p>Create your account</p>
+        </div>
+
+        <div class="form-container">
+            <form method="POST" action="/signup">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="Choose a username">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Create a strong password">
+                </div>
+
+                <button type="submit" class="btn">Create Account</button>
+            </form>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <div class="login-link">
+                Already have an account? <a href="/login">Login here</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - BudgetWise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom right, #E5F5E0, #D8F3DC, #B7E4C7);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+        /* Animated background shapes */
+        body::before {
+            content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, rgba(45, 106, 79, 0.1), rgba(64, 145, 108, 0.1));
+    border-radius: 50%;
+    top: -250px;
+    right: -250px;
+    animation: float 20s infinite ease-in-out;
+        }
+
+        body::after {
+           content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, rgba(82, 183, 136, 0.1), rgba(52, 211, 153, 0.1));
+    border-radius: 50%;
+    bottom: -200px;
+    left: -200px;
+    animation: float 15s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+             background: linear-gradient(135deg, #2D6A4F 0%, #40916C 100%);
+    color: white;
+    padding: 48px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: ripple 15s infinite;
+        }
+
+        @keyframes ripple {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-container span {
+            font-size: 48px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            position: relative;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 15px;
+            position: relative;
+            font-weight: 300;
+        }
+
+        .form-container {
+            padding: 40px;
+            background: white;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .form-group input:focus {
+             outline: none;
+    border-color: #2D6A4F;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.1);
+    transform: translateY(-2px);
+        }
+
+        .form-group input::placeholder {
+            color: #9ca3af;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6b7280;
+            display: none;
+        }
+
+        .password-strength.show {
+            display: block;
+        }
+
+        .strength-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: #e5e7eb;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .strength-bar-fill {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak { 
+            width: 33%; 
+            background: #ef4444; 
+        }
+
+        .strength-medium { 
+            width: 66%; 
+            background: #f59e0b; 
+        }
+
+        .strength-strong { 
+           width: 100%; 
+    background: #52B788; 
+        }
+
+        .btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #2D6A4F 0%, #40916C 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(45, 106, 79, 0.4);
+}
+
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 28px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 20px;
+            position: relative;
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .login-link {
+            text-align: center;
+            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .login-link a {
+            color: #2D6A4F;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    position: relative;
+        }
+
+        .login-link a::after {
+             content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #2D6A4F;
+    transition: width 0.3s ease;
+        }
+
+        .login-link a:hover::after {
+            width: 100%;
+        }
+
+        .login-link a:hover {
+            color: #1B4332;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon.valid input {
+              border-color: #52B788;
+    background: #D8F3DC;
+        }
+
+        .input-icon.invalid input {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .validation-message {
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .validation-message.show {
+            display: block;
+        }
+
+        .validation-message.error {
+            color: #ef4444;
+        }
+
+        .validation-message.success {
+            color: #2D6A4F;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .header {
+                padding: 36px 24px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .form-container {
+                padding: 32px 24px;
+            }
+
+            .logo-container {
+                width: 70px;
+                height: 70px;
+            }
+
+            .logo-container span {
+                font-size: 40px;
+            }
+        }
+
+        /* Loading animation for form submission */
+        .btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .btn.loading::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-message {
+           display: none;
+    background: linear-gradient(135deg, #52B788 0%, #2D6A4F 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: slideDown 0.5s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .success-message p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+        }
+
+        .login-btn:hover {
+            background: #2D6A4F;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(45, 106, 79, 0.3);
+        }
+
+
+        /* Benefits Section Styles
+.benefits-section {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 45%;
+    height: 100vh;
+    background: linear-gradient(135deg, #2D6A4F 0%, #40916C 100%);
+    padding: 60px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
+    z-index: 0;
+}
+
+.benefits-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 8s ease-in-out infinite;
+}
+
+.benefits-content {
+    position: relative;
+    z-index: 1;
+}
+
+.benefits-header {
+    margin-bottom: 40px;
+    animation: slideInRight 0.8s ease-out;
+}
+
+.benefits-header h2 {
+    color: white;
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+
+.benefits-header p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.benefit-item {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    animation: slideInRight 0.8s ease-out backwards;
+}
+
+.benefit-item:nth-child(1) { animation-delay: 0.2s; }
+.benefit-item:nth-child(2) { animation-delay: 0.3s; }
+.benefit-item:nth-child(3) { animation-delay: 0.4s; }
+.benefit-item:nth-child(4) { animation-delay: 0.5s; }
+.benefit-item:nth-child(5) { animation-delay: 0.6s; }
+
+.benefit-item:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateX(-5px);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.benefit-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+.benefit-title {
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.benefit-title::before {
+    content: '✓';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.benefit-description {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-left: 34px;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.stat-box {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: scaleUp 0.6s ease-out backwards;
+}
+
+.stat-box:nth-child(1) { animation-delay: 0.7s; }
+.stat-box:nth-child(2) { animation-delay: 0.8s; }
+
+.stat-number {
+    color: white;
+    font-size: 32px;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/*Update container positioning for split layout 
+body {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.container {
+    width: 55%;
+    max-width: none;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive: Stack on mobile 
+@media (max-width: 1024px) {
+    body {
+        display: block;
+    }
+    
+    .container {
+        width: 100%;
+        max-width: 440px;
+        margin: 0 auto;
+    }
+    
+    .benefits-section {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+} */
+
+
+/* Minimal Benefits List */
+.benefits-mini {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.benefit-mini-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, rgba(45, 106, 79, 0.08), rgba(64, 145, 108, 0.08));
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(45, 106, 79, 0.15);
+}
+
+.benefit-mini-item:hover {
+    background: linear-gradient(135deg, rgba(45, 106, 79, 0.12), rgba(64, 145, 108, 0.12));
+    transform: translateX(3px);
+}
+
+.benefit-mini-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.benefit-mini-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1B4332;
+}
+
+.security-badge {
+    margin-top: 24px;
+    text-align: center;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #2D6A4F, #40916C);
+    color: white;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .benefits-mini {
+        grid-template-columns: 1fr;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- <div class="benefits-section">
+        <div class="benefits-content">
+            <div class="benefits-header">
+                <h2>Why Choose BudgetWise? 🌟</h2>
+                <p>Join thousands of users who have transformed their financial lives with our smart AI-powered platform.</p>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">🤖</span>
+                <div class="benefit-title">AI-Powered Insights</div>
+                <div class="benefit-description">
+                    Get personalized financial recommendations powered by advanced AI that learns from your spending habits.
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">📊</span>
+                <div class="benefit-title">Smart Analytics</div>
+                <div class="benefit-description">
+                    Beautiful charts and visualizations help you understand your financial health at a glance.
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">🎯</span>
+                <div class="benefit-title">Goal Tracking</div>
+                <div class="benefit-description">
+                    Set and track budget goals and savings targets with progress monitoring and deadline alerts.
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">📸</span>
+                <div class="benefit-title">OCR Bill Scanning</div>
+                <div class="benefit-description">
+                    Simply snap a photo of your bills and receipts - AI automatically extracts transaction details.
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">🔮</span>
+                <div class="benefit-title">Predictive Forecasting</div>
+                <div class="benefit-description">
+                    ML-powered predictions help you plan ahead with accurate expense and savings forecasts.
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-box">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Free Forever</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">🔒</span>
+                    <span class="stat-label">Bank-Grade Security</span>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <span>💰</span>
+            </div>
+            <h1>BudgetWise</h1>
+            <p>Create your account</p>
+        </div>
+
+        <div class="form-container">
+            <div class="success-message" id="successMessage">
+                <h3>✅ Success!</h3>
+                <p>Your account has been created successfully</p>
+            </div>
+
+            <form method="POST" action="/signup" id="signupForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-icon" id="usernameGroup">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            required 
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            minlength="3"
+                        >
+                        <div class="validation-message" id="usernameMessage"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-icon" id="emailGroup">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            placeholder="your.email@example.com"
+                            autocomplete="email"
+                        >
+                        <div class="validation-message" id="emailMessage"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-icon" id="passwordGroup">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            required 
+                            placeholder="Create a strong password"
+                            autocomplete="new-password"
+                            minlength="8"
+                        >
+                        <div class="password-strength" id="passwordStrength">
+                            <span id="strengthText">Password strength: </span>
+                            <div class="strength-bar">
+                                <div class="strength-bar-fill" id="strengthBar"></div>
+                            </div>
+                        </div>
+                        <div class="validation-message" id="passwordMessage"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" id="signupBtn">Create Account</button>
+            </form>
+
+            <button class="login-btn" id="loginBtn" style="display: none;" onclick="window.location.href='/login'">
+                Go to Login
+            </button>
+
+            <div class="divider" id="divider">
+                <span>OR</span>
+            </div>
+
+            <div class="login-link" id="loginLink">
+                Already have an account? <a href="/login">Login here</a>
+            </div>
+
+            <div class="benefits-mini">
+    <div class="benefit-mini-item">
+        <span class="benefit-mini-icon">🤖</span>
+        <span class="benefit-mini-text">AI-Powered Insights</span>
+    </div>
+    <div class="benefit-mini-item">
+        <span class="benefit-mini-icon">📊</span>
+        <span class="benefit-mini-text">Smart Analytics</span>
+    </div>
+    <div class="benefit-mini-item">
+        <span class="benefit-mini-icon">🎯</span>
+        <span class="benefit-mini-text">Goal Tracking</span>
+    </div>
+    <div class="benefit-mini-item">
+        <span class="benefit-mini-icon">📸</span>
+        <span class="benefit-mini-text">OCR Bill Scanning</span>
+    </div>
+    <div class="benefit-mini-item">
+        <span class="benefit-mini-icon">🔮</span>
+        <span class="benefit-mini-text">Predictive Forecasting</span>
+    </div>
+</div>
+
+<div class="security-badge">
+    🔒 Bank-Grade Security • 100% Free Forever
+</div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const signupBtn = document.getElementById('signupBtn');
+
+        // Username validation
+        username.addEventListener('input', function() {
+            const group = document.getElementById('usernameGroup');
+            const message = document.getElementById('usernameMessage');
+            
+            if (this.value.length < 3) {
+                group.classList.remove('valid');
+                group.classList.add('invalid');
+                message.textContent = 'Username must be at least 3 characters';
+                message.className = 'validation-message show error';
+            } else {
+                group.classList.remove('invalid');
+                group.classList.add('valid');
+                message.textContent = 'Username looks good!';
+                message.className = 'validation-message show success';
+            }
+        });
+
+        // Email validation
+        email.addEventListener('input', function() {
+            const group = document.getElementById('emailGroup');
+            const message = document.getElementById('emailMessage');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(this.value)) {
+                group.classList.remove('valid');
+                group.classList.add('invalid');
+                message.textContent = 'Please enter a valid email address';
+                message.className = 'validation-message show error';
+            } else {
+                group.classList.remove('invalid');
+                group.classList.add('valid');
+                message.textContent = 'Email looks good!';
+                message.className = 'validation-message show success';
+            }
+        });
+
+        // Password strength checker
+        password.addEventListener('input', function() {
+            const strengthIndicator = document.getElementById('passwordStrength');
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+            const group = document.getElementById('passwordGroup');
+            const message = document.getElementById('passwordMessage');
+            
+            strengthIndicator.classList.add('show');
+            
+            let strength = 0;
+            const value = this.value;
+            
+            if (value.length >= 8) strength++;
+            if (value.match(/[a-z]/) && value.match(/[A-Z]/)) strength++;
+            if (value.match(/[0-9]/)) strength++;
+            if (value.match(/[^a-zA-Z0-9]/)) strength++;
+            
+            strengthBar.className = 'strength-bar-fill';
+            
+            if (strength === 0 || strength === 1) {
+                strengthBar.classList.add('strength-weak');
+                strengthText.textContent = 'Password strength: Weak';
+                group.classList.add('invalid');
+                group.classList.remove('valid');
+                message.textContent = 'Use 8+ characters with mix of letters, numbers & symbols';
+                message.className = 'validation-message show error';
+            } else if (strength === 2 || strength === 3) {
+                strengthBar.classList.add('strength-medium');
+                strengthText.textContent = 'Password strength: Medium';
+                group.classList.remove('invalid');
+                message.className = 'validation-message';
+            } else {
+                strengthBar.classList.add('strength-strong');
+                strengthText.textContent = 'Password strength: Strong';
+                group.classList.add('valid');
+                group.classList.remove('invalid');
+                message.textContent = 'Great password!';
+                message.className = 'validation-message show success';
+            }
+        });
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            // Validate all fields
+            if (username.value.length < 3) {
+                e.preventDefault();
+                username.focus();
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                e.preventDefault();
+                email.focus();
+                return;
+            }
+            
+            if (password.value.length < 8) {
+                e.preventDefault();
+                password.focus();
+                return;
+            }
+            
+            // Add loading state
+            signupBtn.classList.add('loading');
+            signupBtn.textContent = '';
+            
+            // Let the form submit to Flask
+        });
+
+        // Add blur validation feedback
+        const inputs = [username, email, password];
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    this.parentElement.classList.remove('valid', 'invalid');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
